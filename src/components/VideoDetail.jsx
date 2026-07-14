@@ -1,57 +1,190 @@
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import ReactPlayer from "react-player";
-import { Typography, Box, Stack } from "@mui/material";
+import {
+  Typography,
+  Box,
+  Stack,
+  Avatar,
+  Divider,
+} from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import ThumbUpAltOutlinedIcon from "@mui/icons-material/ThumbUpAltOutlined";
+import VisibilityOutlinedIcon from "@mui/icons-material/VisibilityOutlined";
 
 import { Videos, Loader } from ".";
 import { fetchFromAPI } from "../utils/fetchFromAPI";
 
 const VideoDetail = () => {
   const [videoDetail, setVideoDetail] = useState(null);
-  const [videos, setVideos] = useState(null);
+  const [videos, setVideos] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
-    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`)
-      .then((data) => setVideoDetail(data.items[0]))
+    fetchFromAPI(`videos?part=snippet,statistics&id=${id}`).then((data) =>
+      setVideoDetail(data.items[0])
+    );
 
-    fetchFromAPI(`search?part=snippet&relatedToVideoId=${id}&type=video`)
-      .then((data) => setVideos(data.items))
+    fetchFromAPI(
+      `search?part=snippet&relatedToVideoId=${id}&type=video`
+    ).then((data) => setVideos(data.items));
   }, [id]);
 
-  if(!videoDetail?.snippet) return <Loader />;
+  if (!videoDetail?.snippet) return <Loader />;
 
-  const { snippet: { title, channelId, channelTitle }, statistics: { viewCount, likeCount } } = videoDetail;
+  const {
+    snippet: { title, channelId, channelTitle, description },
+    statistics: { viewCount, likeCount },
+  } = videoDetail;
 
   return (
-    <Box minHeight="95vh">
-      <Stack direction={{ xs: "column", md: "row" }}>
+    <Box
+      sx={{
+        background: "#0f0f0f",
+        minHeight: "100vh",
+        py: 3,
+      }}
+    >
+      <Stack
+        direction={{ xs: "column", lg: "row" }}
+        spacing={4}
+        sx={{
+          maxWidth: "1700px",
+          mx: "auto",
+          px: { xs: 2, md: 4 },
+        }}
+      >
+        {/* Left Section */}
         <Box flex={1}>
-          <Box sx={{ width: "100%", position: "sticky", top: "86px" }}>
-            <ReactPlayer url={`https://www.youtube.com/watch?v=${id}`} className="react-player" controls />
-            <Typography color="#fff" variant="h5" fontWeight="bold" p={2}>
-              {title}
-            </Typography>
-            <Stack direction="row" justifyContent="space-between" sx={{ color: "#fff" }} py={1} px={2} >
-              <Link to={`/channel/${channelId}`}>
-                <Typography variant={{ sm: "subtitle1", md: 'h6' }}  color="#fff" >
+          {/* Video */}
+          <Box
+            sx={{
+              position: "relative",
+              paddingTop: "56.25%",
+              borderRadius: "18px",
+              overflow: "hidden",
+              background: "#000",
+            }}
+          >
+            <ReactPlayer
+              url={`https://www.youtube.com/watch?v=${id}`}
+              controls
+              width="100%"
+              height="100%"
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+            />
+          </Box>
+
+          {/* Title */}
+          <Typography
+            variant="h5"
+            fontWeight="700"
+            color="white"
+            mt={3}
+          >
+            {title}
+          </Typography>
+
+          {/* Channel + Stats */}
+          <Stack
+            direction={{ xs: "column", sm: "row" }}
+            justifyContent="space-between"
+            alignItems={{ xs: "flex-start", sm: "center" }}
+            mt={3}
+            spacing={2}
+          >
+            <Link
+              to={`/channel/${channelId}`}
+              style={{ textDecoration: "none" }}
+            >
+              <Stack direction="row" spacing={2} alignItems="center">
+                <Avatar
+                  sx={{
+                    bgcolor: "#ff0000",
+                    width: 48,
+                    height: 48,
+                  }}
+                >
+                  {channelTitle.charAt(0)}
+                </Avatar>
+
+                <Typography color="white" fontWeight={600}>
                   {channelTitle}
-                  <CheckCircleIcon sx={{ fontSize: "12px", color: "gray", ml: "5px" }} />
+
+                  <CheckCircleIcon
+                    sx={{
+                      fontSize: 16,
+                      color: "#aaa",
+                      ml: 1,
+                    }}
+                  />
                 </Typography>
-              </Link>
-              <Stack direction="row" gap="20px" alignItems="center">
-                <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                  {parseInt(viewCount).toLocaleString()} views
+              </Stack>
+            </Link>
+
+            <Stack direction="row" spacing={3}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <VisibilityOutlinedIcon sx={{ color: "#999" }} />
+
+                <Typography color="#aaa">
+                  {Number(viewCount).toLocaleString()}
                 </Typography>
-                <Typography variant="body1" sx={{ opacity: 0.7 }}>
-                  {parseInt(likeCount).toLocaleString()} likes
+              </Stack>
+
+              <Stack direction="row" spacing={1} alignItems="center">
+                <ThumbUpAltOutlinedIcon sx={{ color: "#999" }} />
+
+                <Typography color="#aaa">
+                  {Number(likeCount).toLocaleString()}
                 </Typography>
               </Stack>
             </Stack>
+          </Stack>
+
+          <Divider sx={{ my: 3, bgcolor: "#2c2c2c" }} />
+
+          {/* Description */}
+          <Box
+            sx={{
+              background: "#1b1b1b",
+              p: 3,
+              borderRadius: "15px",
+            }}
+          >
+            <Typography
+              color="#ddd"
+              sx={{
+                whiteSpace: "pre-line",
+                lineHeight: 1.8,
+              }}
+            >
+              {description}
+            </Typography>
           </Box>
         </Box>
-        <Box px={2} py={{ md: 1, xs: 5 }} justifyContent="center" alignItems="center" >
+
+        {/* Right Section */}
+        <Box
+          sx={{
+            width: {
+              xs: "100%",
+              lg: "380px",
+            },
+          }}
+        >
+          <Typography
+            color="white"
+            fontWeight="bold"
+            fontSize={22}
+            mb={2}
+          >
+            Related Videos
+          </Typography>
+
           <Videos videos={videos} direction="column" />
         </Box>
       </Stack>
