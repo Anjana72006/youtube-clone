@@ -40,11 +40,11 @@ const VideoCard = ({ video: { id: { videoId }, snippet } }) => (
         image={snippet?.thumbnails?.high?.url || demoThumbnailUrl}
         alt={snippet?.title}
         sx={{
-          width: "100%",
-          height: 200,
-          objectFit: "cover",
-          borderRadius: "12px",
-        }}
+  width: "100%",
+  height: 230,
+  objectFit: "cover",
+  borderRadius: "14px",
+}}
       />
     </Link>
 
