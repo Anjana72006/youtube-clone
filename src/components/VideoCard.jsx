@@ -22,15 +22,19 @@ const VideoCard = ({ video: { id: { videoId }, snippet } }) => (
   <Card
     sx={{
       width: "100%",
-      maxWidth: "100%",
-      backgroundColor: "transparent",
+      background: "transparent",
       boxShadow: "none",
-      borderRadius: "14px",
+      borderRadius: "16px",
       overflow: "hidden",
-      transition: "0.25s",
       cursor: "pointer",
+      transition: "all .3s ease",
+
       "&:hover": {
-        transform: "scale(1.02)",
+        transform: "translateY(-4px)",
+      },
+
+      "&:hover img": {
+        transform: "scale(1.03)",
       },
     }}
   >
@@ -39,22 +43,23 @@ const VideoCard = ({ video: { id: { videoId }, snippet } }) => (
         component="img"
         image={snippet?.thumbnails?.high?.url || demoThumbnailUrl}
         alt={snippet?.title}
-     sx={{
-  width: "100%",
-  height: 200,
-  objectFit: "cover",
-  borderRadius: "12px",
-}}
+        sx={{
+          width: "100%",
+          height: 220,
+          objectFit: "cover",
+          borderRadius: "16px",
+          transition: "0.35s ease",
+        }}
       />
     </Link>
 
     <CardContent
       sx={{
         display: "flex",
-        gap: 1.5,
-        px: 0,
-        py: 1.5,
-        backgroundColor: "#0f0f0f",
+        gap: 2,
+        px: 0.5,
+        py: 2,
+        background: "transparent",
       }}
     >
       <Avatar
@@ -62,26 +67,28 @@ const VideoCard = ({ video: { id: { videoId }, snippet } }) => (
           snippet?.channelTitle || "YouTube"
         )}`}
         sx={{
-          width: 38,
-          height: 38,
+          width: 42,
+          height: 42,
+          mt: 0.2,
         }}
       />
 
-      <Box>
+      <Box sx={{ flex: 1 }}>
         <Link
           to={videoId ? `/video/${videoId}` : demoVideoUrl}
           style={{ textDecoration: "none" }}
         >
           <Typography
-            variant="subtitle1"
             sx={{
-              color: "#fff",
+              fontSize: "16px",
               fontWeight: 600,
-              lineHeight: 1.4,
+              color: "#f1f1f1",
+              lineHeight: 1.45,
+
               display: "-webkit-box",
-              overflow: "hidden",
               WebkitLineClamp: 2,
               WebkitBoxOrient: "vertical",
+              overflow: "hidden",
             }}
           >
             {snippet?.title || demoVideoTitle}
@@ -97,31 +104,31 @@ const VideoCard = ({ video: { id: { videoId }, snippet } }) => (
           style={{ textDecoration: "none" }}
         >
           <Typography
-            variant="body2"
             sx={{
-              color: "#AAAAAA",
-              mt: 0.8,
+              mt: 1,
               display: "flex",
               alignItems: "center",
+              color: "#b3b3b3",
+              fontSize: "14px",
             }}
           >
             {snippet?.channelTitle || demoChannelTitle}
 
             <CheckCircleIcon
               sx={{
-                fontSize: 14,
-                ml: 0.5,
-                color: "#AAAAAA",
+                fontSize: 15,
+                ml: 0.6,
+                color: "#909090",
               }}
             />
           </Typography>
         </Link>
 
         <Typography
-          variant="body2"
           sx={{
-            color: "#AAAAAA",
-            mt: 0.3,
+            color: "#909090",
+            fontSize: "13px",
+            mt: 0.5,
           }}
         >
           1.2M views • 3 months ago
@@ -132,3 +139,6 @@ const VideoCard = ({ video: { id: { videoId }, snippet } }) => (
 );
 
 export default VideoCard;
+    
+         
+          
