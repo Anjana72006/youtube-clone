@@ -42,28 +42,34 @@ const VideoDetail = () => {
       sx={{
         background: "#0f0f0f",
         minHeight: "100vh",
-        py: 3,
+        pt: 3,
+        pb: 5,
       }}
     >
       <Stack
         direction={{ xs: "column", lg: "row" }}
         spacing={4}
         sx={{
-          maxWidth: "1700px",
+          maxWidth: "1800px",
           mx: "auto",
-          px: { xs: 2, md: 4 },
+          px: { xs: 2, md: 3 },
         }}
       >
-        {/* Left Section */}
-        <Box flex={1}>
-          {/* Video */}
+        {/* LEFT SIDE */}
+        <Box
+          sx={{
+            flex: 0.72,
+          }}
+        >
           <Box
             sx={{
               position: "relative",
+              width: "100%",
               paddingTop: "56.25%",
               borderRadius: "18px",
               overflow: "hidden",
               background: "#000",
+              boxShadow: "0 10px 30px rgba(0,0,0,.45)",
             }}
           >
             <ReactPlayer
@@ -79,65 +85,80 @@ const VideoDetail = () => {
             />
           </Box>
 
-          {/* Title */}
           <Typography
-            variant="h5"
-            fontWeight="700"
-            color="white"
-            mt={3}
+            sx={{
+              mt: 3,
+              color: "#fff",
+              fontWeight: 700,
+              fontSize: {
+                xs: "20px",
+                md: "24px",
+              },
+              lineHeight: 1.4,
+            }}
           >
             {title}
           </Typography>
 
-          {/* Channel + Stats */}
           <Stack
             direction={{ xs: "column", sm: "row" }}
             justifyContent="space-between"
             alignItems={{ xs: "flex-start", sm: "center" }}
+            spacing={3}
             mt={3}
-            spacing={2}
           >
             <Link
               to={`/channel/${channelId}`}
               style={{ textDecoration: "none" }}
             >
-              <Stack direction="row" spacing={2} alignItems="center">
+              <Stack
+                direction="row"
+                spacing={2}
+                alignItems="center"
+              >
                 <Avatar
                   sx={{
                     bgcolor: "#ff0000",
-                    width: 48,
-                    height: 48,
+                    width: 50,
+                    height: 50,
                   }}
                 >
                   {channelTitle.charAt(0)}
                 </Avatar>
 
-                <Typography color="white" fontWeight={600}>
-                  {channelTitle}
-
-                  <CheckCircleIcon
+                <Box>
+                  <Typography
                     sx={{
-                      fontSize: 16,
-                      color: "#aaa",
-                      ml: 1,
+                      color: "#fff",
+                      fontWeight: 600,
+                      display: "flex",
+                      alignItems: "center",
                     }}
-                  />
-                </Typography>
+                  >
+                    {channelTitle}
+
+                    <CheckCircleIcon
+                      sx={{
+                        fontSize: 16,
+                        ml: 1,
+                        color: "#909090",
+                      }}
+                    />
+                  </Typography>
+                </Box>
               </Stack>
             </Link>
 
-            <Stack direction="row" spacing={3}>
+            <Stack direction="row" spacing={4}>
               <Stack direction="row" spacing={1} alignItems="center">
-                <VisibilityOutlinedIcon sx={{ color: "#999" }} />
-
+                <VisibilityOutlinedIcon sx={{ color: "#909090" }} />
                 <Typography color="#aaa">
                   {Number(viewCount).toLocaleString()}
                 </Typography>
               </Stack>
 
               <Stack direction="row" spacing={1} alignItems="center">
-                <ThumbUpAltOutlinedIcon sx={{ color: "#999" }} />
-
+                <ThumbUpAltOutlinedIcon sx={{ color: "#909090" }} />
                 <Typography color="#aaa">
                   {Number(likeCount).toLocaleString()}
                 </Typography>
@@ -145,21 +166,25 @@ const VideoDetail = () => {
             </Stack>
           </Stack>
 
-          <Divider sx={{ my: 3, bgcolor: "#2c2c2c" }} />
+          <Divider
+            sx={{
+              my: 3,
+              bgcolor: "#303030",
+            }}
+          />
 
-          {/* Description */}
           <Box
             sx={{
-              background: "#1b1b1b",
+              background: "#1d1d1d",
+              borderRadius: "16px",
               p: 3,
-              borderRadius: "15px",
             }}
           >
             <Typography
-              color="#ddd"
               sx={{
-                whiteSpace: "pre-line",
+                color: "#ddd",
                 lineHeight: 1.8,
+                whiteSpace: "pre-line",
               }}
             >
               {description}
@@ -167,22 +192,24 @@ const VideoDetail = () => {
           </Box>
         </Box>
 
-        {/* Right Section */}
+        {/* RIGHT SIDE */}
         <Box
           sx={{
-            width: {
-              xs: "100%",
+            flex: 0.28,
+            minWidth: {
               lg: "380px",
             },
           }}
         >
           <Typography
-            color="white"
-            fontWeight="bold"
-            fontSize={22}
-            mb={2}
+            sx={{
+              color: "#fff",
+              fontWeight: 700,
+              fontSize: 22,
+              mb: 2,
+            }}
           >
-            Related Videos
+            Recommended Videos
           </Typography>
 
           <Videos videos={videos} direction="column" />
